@@ -20,6 +20,10 @@
     <script type="text/javascript" src="/_layouts/15/sp.runtime.js"></script> 
     <script type="text/javascript" src="/_layouts/15/sp.js"></script>
     <script type="text/javascript" src="../Scripts/SPGenericAppFunctions.js"></script>
+    <script type="text/javascript" src="/_layouts/15/clienttemplates.js"></script>
+    <script type="text/javascript" src="/_layouts/15/clientforms.js"></script>
+    <script type="text/javascript" src="/_layouts/15/clientpeoplepicker.js"></script>
+    <script type="text/javascript" src="/_layouts/15/autofill.js"></script>
 </asp:Content>
 
 <%-- The markup in the following Content element will be placed in the TitleArea of the page --%>
@@ -29,8 +33,11 @@
 
 <%-- The markup and script in the following Content element will be placed in the <body> of the page --%>
 <asp:Content ContentPlaceHolderID="PlaceHolderMain" runat="server">
+    <b>
+        <asp:Label ClientIDMode="Static" ID="UsernameLabel" runat="server" Text="gooodboy"></asp:Label></b><br/>
     <b>Add New Item:</b><br />
    <table border="1">
+       <tr><td>UserName</td><td><div id="PeoplePickerDiv"></div></td></tr>
        <tr><td>Title:</td><td><input id="txtTitle" type="text" /></td></tr>
        <tr><td>Description:</td><td><textarea id="txtDescription" cols="20" rows="2"></textarea></td></tr>
        <tr><td>    Status:</td><td><select id="sltStatus">
@@ -46,6 +53,5 @@
     <b>List:</b>&nbsp;<button type="button" onclick="LoadRecords();">Refresh</button><br />
     <table border="1" id="tblItemList"></table>
 
-    <a href ="http://google.com">GOOGLE</a>
-    <a href ="http://google.com">GOOGLE</a>
+    
 </asp:Content>

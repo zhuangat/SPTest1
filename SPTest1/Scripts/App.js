@@ -23,12 +23,13 @@ function initializePage()
 
     // This code runs when the DOM is ready and creates a context object which is needed to use the SharePoint object model
     $(document).ready(function () {
-        //getUserName();
+        getUserName(user);
+        initializePeoplePicker('PeoplePickerDiv');
         LoadRecords();
     });
 
     PageLoadedREST();
-    /*
+    
     // This function prepares, loads, and then executes a SharePoint query to get the current users information
     function getUserName() {
         context.load(user);
@@ -38,14 +39,30 @@ function initializePage()
     // This function is executed if the above call is successful
     // It replaces the contents of the 'message' element with the user name
     function onGetUserNameSuccess() {
-        $('#message').text('Hello ' + user.get_title());
+        console.log('Hello ' + user.get_title());
+        $('span#UsernameLabel').text('Hello ' + user.get_title());
+
     }
 
     // This function is executed if the above call fails
     function onGetUserNameFail(sender, args) {
         alert('Failed to get user name. Error:' + args.get_message());
     }
-    */
+
+    function initializePeoplePicker(peoplePickerElementId, AllowMultipleValues = false)
+    {
+        // Create a schema to store picker properties, and set the properties.
+        var schema = {};
+        schema['PrincipalAccountType'] = 'User,DL,SecGroup,SPGroup';
+        schema['SearchPrincipalSource'] = 15;
+        schema['ResolvePrincipalSource'] = 15;
+        schema['AllowMultipleValues'] = AllowMultipleValues;
+        schema['MaximumEntitySuggestions'] = 50;
+        schema['Width'] = '280px';
+
+        SPClientPeoplePicker_InitStandaloneControlWrapper(peoplePickerElementId, null, schema);
+    }
+    
 }
 
 function CreateRecord() {
@@ -62,7 +79,7 @@ function CreateRecord() {
     var itemCreateInfo = new SP.ListItemCreationInformation();
     var oListItem = oList.addItem(itemCreateInfo);
     oListItem.set_item('Title', title);
-    oListItem.set_item('Desc', description);
+    oListItem.set_item('Desc', description + SPClientPeoplePicker.SPClientPeoplePickerDict.PeoplePickerDiv_TopSpan.GetAllUserInfo()[0].Key);
     oListItem.set_item('Status', status);
     oListItem.update();
 
@@ -79,6 +96,9 @@ function CreateRecord() {
             onItemUpdateFailure
         );*/
 
+
+    //Get info out from peoplepicker
+    //console.log(SPClientPeoplePicker.SPClientPeoplePickerDict.PeoplePickerDiv_TopSpan.GetAllUserInfo()[0].Key);
 }
 
 function LoadRecords() {
