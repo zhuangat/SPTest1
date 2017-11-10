@@ -70,17 +70,28 @@ function CreateRecord() {
     var title = $("input#txtTitle").val();
     var description = $("textarea#txtDescription").val();
     var status = $("select#sltStatus").val();
+    var ManagerTitle = '';
+
+    if (SPClientPeoplePicker.SPClientPeoplePickerDict.PeoplePickerDiv_TopSpan.GetAllUserInfo()[0].Key != 'undefined')
+    {
+        ManagerTitle = SPClientPeoplePicker.SPClientPeoplePickerDict.PeoplePickerDiv_TopSpan.GetAllUserKeys();
+        console.log(ManagerTitle);
+    }
+        
+        
 
     console.log("title: " + title);
     console.log("Desc: " + description);
     console.log("Status: " + status);
+    console.log("Manager Title: " + ManagerTitle);
 
     var oList = context.get_web().get_lists().getByTitle('NewList1');
     var itemCreateInfo = new SP.ListItemCreationInformation();
     var oListItem = oList.addItem(itemCreateInfo);
     oListItem.set_item('Title', title);
-    oListItem.set_item('Desc', description + SPClientPeoplePicker.SPClientPeoplePickerDict.PeoplePickerDiv_TopSpan.GetAllUserInfo()[0].Key);
+    oListItem.set_item('Desc', description);
     oListItem.set_item('Status', status);
+    oListItem.set_item('ManagerTitle', ManagerTitle);
     oListItem.update();
 
     LoadRecords();
@@ -97,17 +108,21 @@ function CreateRecord() {
         );*/
 
 
-    //Get info out from peoplepicker
-    //console.log(SPClientPeoplePicker.SPClientPeoplePickerDict.PeoplePickerDiv_TopSpan.GetAllUserInfo()[0].Key);
+
 }
 
 function LoadRecords() {
+    //Disable refresh button to avoid muliple clicking
+    
+
     var oList = context.get_web().get_lists().getByTitle('NewList1');
     var camlQuery = new SP.CamlQuery();
     camlQuery.set_viewXml('<View><RowLimit>100</RowLimit></View>');
     collListItem = oList.getItems(camlQuery);
     context.load(collListItem);
     context.executeQueryAsync(onItemsLoadSucceeded, onItemsLoadFailed);
+
+    
 }
 
 function onItemsLoadSucceeded() {

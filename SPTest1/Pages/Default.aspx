@@ -50,7 +50,7 @@
       </table>
 
     <br /><br />
-    <b>List:</b>&nbsp;<button type="button" onclick="LoadRecords();">Refresh</button><br />
+    <b>List:</b>&nbsp;<button id="RefreshButton" type="button" onclick="LoadRecords();">Refresh</button><br />
     <table border="1" id="tblItemList"></table>
 
     
