@@ -63,6 +63,9 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="Scripts\angular-mocks.js" />
+    <Content Include="Scripts\angular.js" />
+    <Content Include="Scripts\angular.min.js" />
     <Content Include="WorkflowHistoryList\Elements.xml" />
     <Content Include="WorkflowTaskList\Elements.xml" />
     <None Include="Lists\NewList1\NewList1Instance\SharePointProjectItem.spdata">
@@ -82,6 +85,7 @@
     <Content Include="Lists\NewList1\Schema.xml" />
     <Content Include="Pages\Elements.xml" />
     <Content Include="Pages\Default.aspx" />
+    <None Include="Scripts\angular.min.js.map" />
     <None Include="WorkflowHistoryList\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{3c427e0b-cdae-43d8-8f93-55c9392bbe83}</SharePointProjectItemId>
     </None>

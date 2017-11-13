@@ -4,12 +4,12 @@
     <ContentTypes>
       
       
-    <ContentType ID="0x0100eb3f119ff0c24bb0b5ff78d0435f4021" Name="ListFieldsContentType"><FieldRefs><FieldRef ID="{fa564e0f-0c70-4ab9-b863-0177e6ddd247}" Name="Title" /><FieldRef ID="{4159f567-b812-4464-9629-03495f96f9fd}" Name="Desc" /><FieldRef ID="{c7ddd187-11c3-4dd8-9c8f-fe602ba1f855}" Name="Status" /><FieldRef ID="{0d6f2c2b-4ccb-4cfd-a1e7-784b0f612a2a}" Name="ManagerTitle" /></FieldRefs></ContentType><ContentTypeRef ID="0x01">
+    <ContentType ID="0x0100eb3f119ff0c24bb0b5ff78d0435f4021" Name="ListFieldsContentType"><FieldRefs><FieldRef ID="{fa564e0f-0c70-4ab9-b863-0177e6ddd247}" Name="Title" /><FieldRef ID="{4159f567-b812-4464-9629-03495f96f9fd}" Name="Desc" /><FieldRef ID="{c7ddd187-11c3-4dd8-9c8f-fe602ba1f855}" Name="Status" /><FieldRef ID="{0d6f2c2b-4ccb-4cfd-a1e7-784b0f612a2a}" Name="ManagerTitle" /><FieldRef ID="{6deb5bba-fb59-4e76-963c-96e6388330b1}" Name="StartDate1" /><FieldRef ID="{9398f899-98ad-4260-b165-34d2918b94ff}" Name="EndDate1" /></FieldRefs></ContentType><ContentTypeRef ID="0x01">
         <Folder TargetName="Item" />
       </ContentTypeRef><ContentTypeRef ID="0x0120" /></ContentTypes>
     <Fields>
       
-    <Field ID="{fa564e0f-0c70-4ab9-b863-0177e6ddd247}" Type="Text" Name="Title" DisplayName="Title" Required="TRUE" SourceID="http://schemas.microsoft.com/sharepoint/v3" StaticName="Title" MaxLength="255" /><Field Name="Desc" ID="{4159f567-b812-4464-9629-03495f96f9fd}" DisplayName="Desc" Type="Note" /><Field Name="Status" ID="{c7ddd187-11c3-4dd8-9c8f-fe602ba1f855}" DisplayName="Status" Type="Choice"><CHOICES><CHOICE>New</CHOICE><CHOICE>Draft</CHOICE><CHOICE>Submitted</CHOICE><CHOICE>Approved</CHOICE><CHOICE>Rejected</CHOICE></CHOICES></Field><Field Name="ManagerTitle" ID="{0d6f2c2b-4ccb-4cfd-a1e7-784b0f612a2a}" DisplayName="ManagerTitle" Type="Text" Required="TRUE" /></Fields>
+    <Field ID="{fa564e0f-0c70-4ab9-b863-0177e6ddd247}" Type="Text" Name="Title" DisplayName="Title" Required="TRUE" SourceID="http://schemas.microsoft.com/sharepoint/v3" StaticName="Title" MaxLength="255" /><Field Name="Desc" ID="{4159f567-b812-4464-9629-03495f96f9fd}" DisplayName="Desc" Type="Note" /><Field Name="Status" ID="{c7ddd187-11c3-4dd8-9c8f-fe602ba1f855}" DisplayName="Status" Type="Choice"><CHOICES><CHOICE>New</CHOICE><CHOICE>Draft</CHOICE><CHOICE>Submitted</CHOICE><CHOICE>Approved</CHOICE><CHOICE>Rejected</CHOICE></CHOICES></Field><Field Name="ManagerTitle" ID="{0d6f2c2b-4ccb-4cfd-a1e7-784b0f612a2a}" DisplayName="ManagerTitle" Type="Text" Required="TRUE" /><Field Name="StartDate1" ID="{6deb5bba-fb59-4e76-963c-96e6388330b1}" DisplayName="StartDate" Type="DateTime" /><Field Name="EndDate1" ID="{9398f899-98ad-4260-b165-34d2918b94ff}" DisplayName="EndDate" Type="DateTime" /></Fields>
     <Views>
       
       
@@ -37,7 +37,7 @@
         <RowLimit Paged="TRUE">30</RowLimit>
         <ViewFields>
           
-        <FieldRef Name="LinkTitle"></FieldRef><FieldRef Name="Desc" /><FieldRef Name="Status" /><FieldRef Name="ManagerTitle" /></ViewFields>
+        <FieldRef Name="LinkTitle"></FieldRef><FieldRef Name="Desc" /><FieldRef Name="Status" /><FieldRef Name="ManagerTitle" /><FieldRef Name="StartDate1" /><FieldRef Name="EndDate1" /></ViewFields>
         <Query>
           <OrderBy>
             

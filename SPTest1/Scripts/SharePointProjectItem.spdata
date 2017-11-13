@@ -8,5 +8,9 @@
     <ProjectItemFile Source="jquery-1.9.1.js" Target="Scripts\" Type="ElementFile" />
     <ProjectItemFile Source="jquery-1.9.1.intellisense.js" Target="Scripts\" Type="ElementFile" />
     <ProjectItemFile Source="SPGenericAppFunctions.js" Target="Scripts\" Type="ElementFile" />
+    <ProjectItemFile Source="angular.min.js.map" Target="Scripts\" Type="ElementFile" />
+    <ProjectItemFile Source="angular.min.js" Target="Scripts\" Type="ElementFile" />
+    <ProjectItemFile Source="angular.js" Target="Scripts\" Type="ElementFile" />
+    <ProjectItemFile Source="angular-mocks.js" Target="Scripts\" Type="ElementFile" />
   </Files>
 </ProjectItem>

@@ -24,6 +24,7 @@
     <script type="text/javascript" src="/_layouts/15/clientforms.js"></script>
     <script type="text/javascript" src="/_layouts/15/clientpeoplepicker.js"></script>
     <script type="text/javascript" src="/_layouts/15/autofill.js"></script>
+    <script type="text/javascript" src="/_layouts/15/datepicker.js"></script>
 </asp:Content>
 
 <%-- The markup in the following Content element will be placed in the TitleArea of the page --%>
@@ -45,6 +46,8 @@
         <option value="New">New</option>
         <option value="Submitted">Submitted</option>
            </select></td></tr>
+       <tr><td>Start Date (mm/dd/yyyy):</td><td><input id="txtStartDate" type="text" class="DT" onchange="OnDatePicked()"/></td></tr>
+       <tr><td>End Date (mm/dd/yyyy):</td><td><input id="txtEndDate" type="text" class="DT" onchange="OnDatePicked()" /></td></tr>
         <tr><td><input type="button" value="Submit" onclick="javascript: return CreateRecord();" /></td><td></td></tr>
     
       </table>
@@ -52,6 +55,6 @@
     <br /><br />
     <b>List:</b>&nbsp;<button id="RefreshButton" type="button" onclick="LoadRecords();">Refresh</button><br />
     <table border="1" id="tblItemList"></table>
-
+   
     
 </asp:Content>

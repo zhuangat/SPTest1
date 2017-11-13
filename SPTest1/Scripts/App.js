@@ -12,6 +12,7 @@ var userlistnames = {};
 var siteurl;
 var appUrl;
 var hostUrl;
+var timeZone;
 
 var curAppInstanceId = "";
 var collListItem = '';
@@ -21,10 +22,14 @@ function initializePage()
     context = SP.ClientContext.get_current();
     user = context.get_web().get_currentUser();
 
+
+
     // This code runs when the DOM is ready and creates a context object which is needed to use the SharePoint object model
     $(document).ready(function () {
         getUserName(user);
+        getRegionalSettings();
         initializePeoplePicker('PeoplePickerDiv');
+        initializeDatePickers(hostUrl + '/_layouts/15');
         LoadRecords();
     });
 
@@ -49,6 +54,22 @@ function initializePage()
         alert('Failed to get user name. Error:' + args.get_message());
     }
 
+    function getRegionalSettings()
+    {
+        timeZone = context.get_web().get_regionalSettings().get_timeZone();
+        context.load(timeZone);
+        context.executeQueryAsync(onGetRegionalSettingsSuccess, onGetRegionalSettingsFail);
+    }
+
+    function onGetRegionalSettingsSuccess()
+    {
+        //console.log(timeZone.get_description());
+    }
+    function onGetRegionalSettingsFail(sender, args) {
+        alert('Failed to get RegionalSettings. Error:' + args.get_message());
+    }
+
+
     function initializePeoplePicker(peoplePickerElementId, AllowMultipleValues = false)
     {
         // Create a schema to store picker properties, and set the properties.
@@ -58,24 +79,67 @@ function initializePage()
         schema['ResolvePrincipalSource'] = 15;
         schema['AllowMultipleValues'] = AllowMultipleValues;
         schema['MaximumEntitySuggestions'] = 50;
-        schema['Width'] = '280px';
+        schema['Width'] = '200px';
 
         SPClientPeoplePicker_InitStandaloneControlWrapper(peoplePickerElementId, null, schema);
     }
     
 }
 
+function initializeDatePickers(urlWithLayouts, mindate, maxdate) {
+    var calendarOptions = [];
+
+    if (mindate == null) {
+        mindate = 109207;
+    }
+    if (maxdate == null) {
+        maxdate = 2666269;
+    }
+
+    calendarOptions.push(urlWithLayouts + '/iframe.aspx?');
+    calendarOptions.push('&cal=1');
+    calendarOptions.push('&lcid=1033');
+    calendarOptions.push('&langid=1033');
+    calendarOptions.push('&tz=+08:00:00.0002046');
+    calendarOptions.push('&ww=0111110');
+    calendarOptions.push('&fdow=0');
+    calendarOptions.push('&fwoy=0');
+    calendarOptions.push('&hj=0');
+    calendarOptions.push('&swn=false');
+    calendarOptions.push('&minjday=' + mindate);
+    calendarOptions.push('&maxjday=' + maxdate);
+    calendarOptions.push('&date=');
+
+    $('.DT').each(function (index) {
+        var id = $(this).attr('id');
+
+        $(this).after('<iframe id="' + id + 'DatePickerFrame" title="Select a date from the calendar." style="display:none; position:absolute; width:200px; z-index:101;" src="/_layouts/15/images/blank.gif?rev=23"></iframe>');
+        $(this).after('<a href="#" style="vertical-align:top;"><img id="' + id + 'DatePickerImage" border="0" alt="Select a date from the calendar." src="/_layouts/15/images/calendar_25.gif?rev=23"></a>');
+        var sonclick = 'clickDatePicker("' + id + '", "' + calendarOptions.join('') + '", \'\', event); return false;';
+        $(this).next('a').attr('onclick', sonclick);
+    });
+}
+
+function OnDatePicked(data) {
+    console.log("Date Picker Changed:" + JSON.stringify(data));
+}
+
+
 function CreateRecord() {
 
     var title = $("input#txtTitle").val();
     var description = $("textarea#txtDescription").val();
     var status = $("select#sltStatus").val();
-    var ManagerTitle = '';
+    var startDate = $("input#txtStartDate").val();
+    var endDate = $("input#txtEndDate").val();
+    var managerTitle = '';
+
 
     if (SPClientPeoplePicker.SPClientPeoplePickerDict.PeoplePickerDiv_TopSpan.GetAllUserInfo()[0].Key != 'undefined')
     {
-        ManagerTitle = SPClientPeoplePicker.SPClientPeoplePickerDict.PeoplePickerDiv_TopSpan.GetAllUserKeys();
-        console.log(ManagerTitle);
+        managerTitle = SPClientPeoplePicker.SPClientPeoplePickerDict.PeoplePickerDiv_TopSpan.GetAllUserKeys();
+        managerTitle.replace("i:0#.f|membership|", "");
+        console.log(managerTitle);
     }
         
         
@@ -83,7 +147,9 @@ function CreateRecord() {
     console.log("title: " + title);
     console.log("Desc: " + description);
     console.log("Status: " + status);
-    console.log("Manager Title: " + ManagerTitle);
+    console.log("Manager Title: " + managerTitle);
+    console.log("Start Date: " + ISOFormatDate(startDate, timeZone));
+    console.log("End Date: " + ISOFormatDate(endDate, timeZone));
 
     var oList = context.get_web().get_lists().getByTitle('NewList1');
     var itemCreateInfo = new SP.ListItemCreationInformation();
@@ -91,7 +157,9 @@ function CreateRecord() {
     oListItem.set_item('Title', title);
     oListItem.set_item('Desc', description);
     oListItem.set_item('Status', status);
-    oListItem.set_item('ManagerTitle', ManagerTitle);
+    oListItem.set_item('ManagerTitle', managerTitle);
+    oListItem.set_item('StartDate1', ISOFormatDate(startDate, timeZone));
+    oListItem.set_item('EndDate1', ISOFormatDate(endDate, timeZone));
     oListItem.update();
 
     LoadRecords();
@@ -111,29 +179,46 @@ function CreateRecord() {
 
 }
 
+function ISOFormatDate(date,timeZone)
+{
+    var tz = timeZone.get_description();
+    tz = tz.slice(4, 10);
+    //console.log(tz);
+
+    var pattern = /(\d{2})\/(\d{2})\/(\d{4})/;
+    var sdate = date.replace(pattern, '$3-$1-$2') + "T" + "00:00:00" + tz;
+    var mm =date.split("/");
+    var mnewdate = mm[2] + "-" + ("0" + mm[0]).slice(-2) + "-" + ("0" + mm[1]).slice(-2) + "T" + "00:00:00" + tz;
+    if (sdate.includes("/"))
+        return mnewdate;
+    else
+        return sdate;
+}
+
+
+
+
 function LoadRecords() {
-    //Disable refresh button to avoid muliple clicking
     
 
     var oList = context.get_web().get_lists().getByTitle('NewList1');
     var camlQuery = new SP.CamlQuery();
-    camlQuery.set_viewXml('<View><RowLimit>100</RowLimit></View>');
+    camlQuery.set_viewXml('<View><Query><Where><Eq><FieldRef Name=\'Status\'/>' + 
+        '<Value Type=\'Choice\'>Submitted</Value></Eq></Where></Query><RowLimit>100</RowLimit></View>');
     collListItem = oList.getItems(camlQuery);
     context.load(collListItem);
     context.executeQueryAsync(onItemsLoadSucceeded, onItemsLoadFailed);
-
-    
 }
 
 function onItemsLoadSucceeded() {
-    var listItemInfo = '<tr><th>ID</th><th>Title</th><th>Description</th><th>Status</th><th>Action</th></tr>';
+    var listItemInfo = '<tr><th>ID</th><th>Title</th><th>Description</th><th>Start Date</th><th>End Date</th><th>Status</th><th>Action</th></tr>';
 
     var listItemEnumerator = collListItem.getEnumerator();
 
     while (listItemEnumerator.moveNext()) {
         var oListItem = listItemEnumerator.get_current();
         //listItemInfo = listItemInfo + '<li>' + oListItem.get_item('Title') + ' ' + oListItem.get_item('Description') + '</li>';
-        listItemInfo = listItemInfo + '<tr><td>' + oListItem.get_item('ID') + '</td><td>' + oListItem.get_item('Title') + '</td><td>' + oListItem.get_item('Desc') + '</td><td>' + oListItem.get_item('Status') + '</td><td><button type="button" onclick="DeleteItem(' + oListItem.get_item('ID') + ')">Delete</button>';
+        listItemInfo = listItemInfo + '<tr><td>' + oListItem.get_item('ID') + '</td><td>' + oListItem.get_item('Title') + '</td><td>' + oListItem.get_item('Desc') + '</td><td>' + oListItem.get_item('StartDate1') + '</td><td>' + oListItem.get_item('EndDate1') + '</td><td>' + oListItem.get_item('Status') + '</td><td><button type="button" onclick="DeleteItem(' + oListItem.get_item('ID') + ')">Delete</button>';
 
         if (oListItem.get_item('Status') == "Submitted")
         {
