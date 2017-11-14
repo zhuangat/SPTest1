@@ -133,13 +133,13 @@ function CreateRecord() {
     var startDate = $("input#txtStartDate").val();
     var endDate = $("input#txtEndDate").val();
     var managerTitle = '';
-
+    var mt = '';
 
     if (SPClientPeoplePicker.SPClientPeoplePickerDict.PeoplePickerDiv_TopSpan.GetAllUserInfo()[0].Key != 'undefined')
     {
         managerTitle = SPClientPeoplePicker.SPClientPeoplePickerDict.PeoplePickerDiv_TopSpan.GetAllUserKeys();
-        managerTitle.replace("i:0#.f|membership|", "");
-        console.log(managerTitle);
+        mt = managerTitle.replace("i:0#.f|membership|", "");
+        //console.log(mt);
     }
         
         
@@ -147,7 +147,7 @@ function CreateRecord() {
     console.log("title: " + title);
     console.log("Desc: " + description);
     console.log("Status: " + status);
-    console.log("Manager Title: " + managerTitle);
+    console.log("Manager Title: " + mt);
     console.log("Start Date: " + ISOFormatDate(startDate, timeZone));
     console.log("End Date: " + ISOFormatDate(endDate, timeZone));
 
@@ -157,7 +157,7 @@ function CreateRecord() {
     oListItem.set_item('Title', title);
     oListItem.set_item('Desc', description);
     oListItem.set_item('Status', status);
-    oListItem.set_item('ManagerTitle', managerTitle);
+    oListItem.set_item('ManagerTitle', mt);
     oListItem.set_item('StartDate1', ISOFormatDate(startDate, timeZone));
     oListItem.set_item('EndDate1', ISOFormatDate(endDate, timeZone));
     oListItem.update();
@@ -203,8 +203,9 @@ function LoadRecords() {
 
     var oList = context.get_web().get_lists().getByTitle('NewList1');
     var camlQuery = new SP.CamlQuery();
-    camlQuery.set_viewXml('<View><Query><Where><Eq><FieldRef Name=\'Status\'/>' + 
-        '<Value Type=\'Choice\'>Submitted</Value></Eq></Where></Query><RowLimit>100</RowLimit></View>');
+    camlQuery.set_viewXml('<View><Query><Where><Or><Eq><FieldRef Name=\'Status\'/>' + 
+        '<Value Type=\'Choice\'>Submitted</Value></Eq><Eq><FieldRef Name=\'Status\'/>' + 
+        '<Value Type=\'Choice\'>Draft</Value></Eq></Or></Where></Query><RowLimit>100</RowLimit></View>');
     collListItem = oList.getItems(camlQuery);
     context.load(collListItem);
     context.executeQueryAsync(onItemsLoadSucceeded, onItemsLoadFailed);
@@ -225,7 +226,10 @@ function onItemsLoadSucceeded() {
             listItemInfo = listItemInfo + '<button type="button" onclick="ApproveItem(' + oListItem.get_item('ID') + ')">Approve</button>';
             listItemInfo = listItemInfo + '<button type="button" onclick="RejectItem(' + oListItem.get_item('ID') + ')">Reject</button>';
         }
-
+        else if (oListItem.get_item('Status') == "Draft")
+        {
+            listItemInfo += '<button type="button" onclick="SubmitItem(' + oListItem.get_item('ID') + ')">Submit</button>';
+        }
 
         listItemInfo = listItemInfo + '</td></tr>';
     }
@@ -235,6 +239,46 @@ function onItemsLoadSucceeded() {
 
 function onItemsLoadFailed(sender, args) {
     alert("Failed loading notes" + args.get_message()); 
+}
+
+function SubmitItem(id)
+{
+    var listName = "NewList1";
+    var itemType = GetItemTypeForListName(listName);
+
+    var posturl = hostUrl + "/_api/web/lists/getbytitle('" + listName + "')/items(" + id + ")";
+
+    var item = {
+        "Status": "Submitted"
+    };
+
+    var itemNew = {
+        '__metadata': { 'type': GetItemTypeForListName(listName) }
+    };
+    for (var prop in item) {
+        itemNew[prop] = item[prop];
+    }
+
+    $.ajax({
+        url: posturl,
+        type: "POST",
+        contentType: "application/json;odata=verbose",
+        data: JSON.stringify(itemNew),
+        headers: {
+            "Accept": "application/json;odata=verbose",
+            "X-RequestDigest": $("#__REQUESTDIGEST").val(),
+            "X-HTTP-Method": "MERGE",
+            "IF-MATCH": "*"
+        },
+        success: function (data) {
+            console.log("Item updated");
+            LoadRecords();
+        },
+        error: function (data) {
+            console.log("Item cannot be updated");
+            LoadRecords();
+        }
+    });
 }
 
 function ApproveItem(id) {
