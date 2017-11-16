@@ -67,7 +67,9 @@
     <Content Include="Scripts\angular.js" />
     <Content Include="Scripts\angular.min.js" />
     <Content Include="WorkflowHistoryList\Elements.xml" />
+    <Content Include="WorkflowHistoryList_1\Elements.xml" />
     <Content Include="WorkflowTaskList\Elements.xml" />
+    <Content Include="WorkflowTaskList_1\Elements.xml" />
     <None Include="Lists\NewList1\NewList1Instance\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{ff1e0124-976a-44f5-a814-bd5c8930d716}</SharePointProjectItemId>
     </None>
@@ -80,7 +82,9 @@
     <None Include="Pages\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{b3e93453-5c84-43af-950b-9ceedff5e70a}</SharePointProjectItemId>
     </None>
-    <Content Include="Lists\NewList1\Elements.xml" />
+    <Content Include="Lists\NewList1\Elements.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Lists\NewList1\NewList1Instance\Elements.xml" />
     <Content Include="Lists\NewList1\Schema.xml" />
     <Content Include="Pages\Elements.xml" />
@@ -89,11 +93,20 @@
     <None Include="WorkflowHistoryList\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{3c427e0b-cdae-43d8-8f93-55c9392bbe83}</SharePointProjectItemId>
     </None>
+    <None Include="WorkflowHistoryList_1\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{b2e0d31c-1c90-48f7-adea-93b0d7903bd5}</SharePointProjectItemId>
+    </None>
     <None Include="Workflows\NewWorkflow1\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{72ffc17a-6df3-474e-ad39-5e21c3cdf6b6}</SharePointProjectItemId>
     </None>
+    <None Include="Workflows\SendEmailWhenApprovedOrRejected\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{84c9e691-ab8f-48f9-99dc-99e078f2b731}</SharePointProjectItemId>
+    </None>
     <None Include="WorkflowTaskList\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{7d4a59b7-c7b9-46be-be21-0556ca09a2da}</SharePointProjectItemId>
+    </None>
+    <None Include="WorkflowTaskList_1\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{e575ab99-25b8-4922-a887-d5038fce8767}</SharePointProjectItemId>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -101,7 +114,9 @@
     <None Include="Scripts\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{4fb02dde-3b02-4632-b992-8c116dd67389}</SharePointProjectItemId>
     </None>
-    <Content Include="Scripts\Elements.xml" />
+    <Content Include="Scripts\Elements.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Scripts\App.js" />
     <Content Include="Scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="Scripts\jquery-1.9.1.js" />
@@ -159,6 +174,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Activities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Activities.Design, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.SharePoint.DesignTime.Activities.16.0, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -169,6 +185,12 @@
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="Workflows\SendEmailWhenApprovedOrRejected\Workflow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

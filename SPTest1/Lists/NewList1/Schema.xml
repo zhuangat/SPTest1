@@ -37,7 +37,7 @@
         <RowLimit Paged="TRUE">30</RowLimit>
         <ViewFields>
           
-        <FieldRef Name="LinkTitle"></FieldRef><FieldRef Name="Desc" /><FieldRef Name="Status" /><FieldRef Name="ManagerTitle" /><FieldRef Name="StartDate1" /><FieldRef Name="EndDate1" /></ViewFields>
+        <FieldRef Name="LinkTitle"></FieldRef><FieldRef Name="Desc" /><FieldRef Name="Status" /><FieldRef Name="ManagerTitle" /><FieldRef Name="StartDate1" /><FieldRef Name="EndDate1" /><FieldRef Name="Attachments" /></ViewFields>
         <Query>
           <OrderBy>
             

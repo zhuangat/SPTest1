@@ -3,7 +3,7 @@
 <App xmlns="http://schemas.microsoft.com/sharepoint/2012/app/manifest"
      Name="SPTest1"
      ProductID="{b3e93453-5c84-43af-950b-9ceedff5e70a}"
-     Version="1.0.0.3"
+     Version="1.0.0.4"
      SharePointMinVersion="16.0.0.0"
 >
   <Properties>
