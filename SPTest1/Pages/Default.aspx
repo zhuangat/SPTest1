@@ -47,7 +47,7 @@
            </select></td></tr>
        <tr><td>Start Date (mm/dd/yyyy):</td><td><input id="txtStartDate" type="text" class="DT" onchange="OnDatePicked()"/></td></tr>
        <tr><td>End Date (mm/dd/yyyy):</td><td><input id="txtEndDate" type="text" class="DT" onchange="OnDatePicked()" /></td></tr>
-       <!--<tr><td>Upload Attachments:</td><td><input type="file" id="getFile"/></td></tr> -->
+       <tr><td>Upload Attachments:</td><td><input type="file" id="getFile"/></td></tr>
         <tr><td><input type="button" value="Submit" onclick="javascript: return CreateRecord();" /></td><td></td></tr>
     
       </table>

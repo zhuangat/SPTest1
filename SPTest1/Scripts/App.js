@@ -161,10 +161,23 @@ function CreateRecord() {
     oListItem.set_item('StartDate1', ISOFormatDate(startDate, timeZone));
     oListItem.set_item('EndDate1', ISOFormatDate(endDate, timeZone));
     oListItem.update();
-
-    LoadRecords();
-    //context.load(oListItem);
+    
+    
+    context.load(oListItem);
     //context.executeQueryAsync(onItemsLoadSucceeded, onItemsLoadFailed);
+    //Get updated ID for attachment Update
+    context.executeQueryAsync(function () {
+        var id = oListItem.get_item("ID");
+        var fileControls = $("#getFile");
+        if (fileControls[0].files[0] != null)
+            UploadAttachment(id, fileControls[0], 'NewList1');
+        else
+            LoadRecords();
+        console.log("Item Added. ID: " + id);
+        
+    }, function (sender, args) {
+        alert("Failed getting ID " + args.get_message()); 
+    });
 
     // only add meeting on successfully added to group
     /*
@@ -175,8 +188,58 @@ function CreateRecord() {
             onItemUpdateFailure
         );*/
 
+    
 
+}
 
+function UploadAttachment(id, fileInput, listName)
+{
+    //Check for HTML 5 file reader.
+    if (!window.FileReader)
+        throw "The browser does not support HTML 5";
+    var file = fileInput.files[0];
+    var fileName = file.name;
+    getFileBuffer(file).then( function (buffer)
+    {
+        UploadAttachmentSP(id, fileName, buffer, listName).done(function () { LoadRecords(); });
+        }, function () {
+            alert("Get Buffer Failed.");
+            LoadRecords();
+        }
+    )
+}
+
+//Get buffer
+function getFileBuffer(file)
+{
+    var def = new $.Deferred();
+    var reader = new FileReader();
+    reader.onloadend = function (e) {
+        def.resolve(e.target.result);
+    }
+    reader.onerror = function (e) {
+        def.reject(e.target.error);
+    }
+    reader.readAsArrayBuffer(file);
+    return def.promise();
+}
+
+function UploadAttachmentSP(id, fileName, buffer, listName) {
+    console.log("uploadAttachment");
+    var url = hostUrl +
+        "/_api/web/lists/getByTitle('" + listName + "')/items('" + id.toString() + "')/AttachmentFiles/add(FileName='" + fileName + "')";
+    return $.ajax({
+        url: url,
+        type: "POST",
+        data: buffer,
+        processData: false,
+        headers: {
+            Accept: "application/json;odata=verbose",
+            "X-RequestDigest": $("#__REQUESTDIGEST").val(),
+            "Content-Length": buffer.byteLength,
+            "IF-MATCH": "*"
+        }
+    });
 }
 
 function ISOFormatDate(date,timeZone)
@@ -203,23 +266,28 @@ function LoadRecords() {
 
     var oList = context.get_web().get_lists().getByTitle('NewList1');
     var camlQuery = new SP.CamlQuery();
-    camlQuery.set_viewXml('<View><Query><Where><Or><Eq><FieldRef Name=\'Status\'/>' + 
-        '<Value Type=\'Choice\'>Submitted</Value></Eq><Eq><FieldRef Name=\'Status\'/>' + 
-        '<Value Type=\'Choice\'>Draft</Value></Eq></Or></Where></Query><RowLimit>100</RowLimit></View>');
+    camlQuery.set_viewXml('<View><RowLimit>100</RowLimit></View>');
     collListItem = oList.getItems(camlQuery);
     context.load(collListItem);
     context.executeQueryAsync(onItemsLoadSucceeded, onItemsLoadFailed);
 }
 
 function onItemsLoadSucceeded() {
-    var listItemInfo = '<tr><th>ID</th><th>Title</th><th>Description</th><th>Start Date</th><th>End Date</th><th>Status</th><th>Action</th></tr>';
+    var listItemInfo = '<tr><th>ID</th><th>Title</th><th>Description</th><th>Start Date</th><th>End Date</th><th>Status</th><th>Attachments</th><th>Action</th></tr>';
 
     var listItemEnumerator = collListItem.getEnumerator();
 
     while (listItemEnumerator.moveNext()) {
         var oListItem = listItemEnumerator.get_current();
         //listItemInfo = listItemInfo + '<li>' + oListItem.get_item('Title') + ' ' + oListItem.get_item('Description') + '</li>';
-        listItemInfo = listItemInfo + '<tr><td>' + oListItem.get_item('ID') + '</td><td>' + oListItem.get_item('Title') + '</td><td>' + oListItem.get_item('Desc') + '</td><td>' + oListItem.get_item('StartDate1') + '</td><td>' + oListItem.get_item('EndDate1') + '</td><td>' + oListItem.get_item('Status') + '</td><td><button type="button" onclick="DeleteItem(' + oListItem.get_item('ID') + ')">Delete</button>';
+        listItemInfo = listItemInfo + '<tr><td>' + oListItem.get_item('ID') +
+            '</td><td>' + oListItem.get_item('Title') +
+            '</td><td>' + oListItem.get_item('Desc') +
+            '</td><td>' + oListItem.get_item('StartDate1') +
+            '</td><td>' + oListItem.get_item('EndDate1') +
+            '</td><td>' + oListItem.get_item('Status') +    
+            '</td><td>' + oListItem.get_item('Attachments') +
+            '</td><td><button type="button" onclick="DeleteItem(' + oListItem.get_item('ID') + ')">Delete</button>';
 
         if (oListItem.get_item('Status') == "Submitted")
         {
