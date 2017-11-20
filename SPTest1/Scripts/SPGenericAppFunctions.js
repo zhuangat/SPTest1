@@ -561,17 +561,21 @@ function getListItemWithIdDeferred(itemId, listName, siteurl, success, failure) 
 
 }
 
-function GetAttachmentsByItemId(itemId, listName, siteUrl, success, failure, id) {
+function GetAttachmentsByItemId(itemId, listName, hostUrl, success ,id) {
+    var attachmentUrl;
+
     $.ajax({
         //url: siteurl + "/_api/web/lists/getbytitle('" + listName + "')/items/?$select=ID,Title,Agenda_CHI,MeetingID,Responsible_ENG,Duration,ItemNo&$filter=" + filter + "&$orderby=ItemNo",
-        url: siteurl + "/_api/web/lists/getbytitle('" + listName + "')/items(" + itemId + ")/attachmentFiles/",
+        url: hostUrl + "/_api/web/lists/getbytitle('" + listName + "')/items(" + itemId + ")/attachmentFiles/",
         method: "GET",
         headers: { "Accept": "application/json; odata=verbose" },
         success: function (data) {
-            success(id, data);
+            success(data ,id);
         },
         error: function (data) {
-            failure(data);
+            console.log(JSON.stringify(data));
         }
     });
+
+    
 }

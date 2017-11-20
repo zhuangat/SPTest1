@@ -279,16 +279,22 @@ function onItemsLoadSucceeded() {
 
     while (listItemEnumerator.moveNext()) {
         var oListItem = listItemEnumerator.get_current();
+
+
         //listItemInfo = listItemInfo + '<li>' + oListItem.get_item('Title') + ' ' + oListItem.get_item('Description') + '</li>';
         listItemInfo = listItemInfo + '<tr><td>' + oListItem.get_item('ID') +
             '</td><td>' + oListItem.get_item('Title') +
-            '</td><td>' + oListItem.get_item('Desc') +
+            '</td><td>' + oListItem.get_item('Desc') + 
             '</td><td>' + oListItem.get_item('StartDate1') +
             '</td><td>' + oListItem.get_item('EndDate1') +
-            '</td><td>' + oListItem.get_item('Status') +    
-            '</td><td>' + oListItem.get_item('Attachments') +
+            '</td><td>' + oListItem.get_item('Status') +
+            '</td><td>' + (oListItem.get_item('Attachments') ? "<a id='linkAtt" + oListItem.get_item('ID') + "' target='_blank' href=''></a>" : oListItem.get_item('Attachments')) +
             '</td><td><button type="button" onclick="DeleteItem(' + oListItem.get_item('ID') + ')">Delete</button>';
 
+        if (oListItem.get_item('Attachments'))
+            GetAttachmentsByItemId(oListItem.get_item('ID'), "NeWList1", appUrl, onGetAttachmentSuccess, oListItem.get_item('ID'));
+
+            
         if (oListItem.get_item('Status') == "Submitted")
         {
             listItemInfo = listItemInfo + '<button type="button" onclick="ApproveItem(' + oListItem.get_item('ID') + ')">Approve</button>';
@@ -303,11 +309,18 @@ function onItemsLoadSucceeded() {
     }
 
     $('#tblItemList').html(listItemInfo);
+
 }
 
 function onItemsLoadFailed(sender, args) {
     alert("Failed loading notes" + args.get_message()); 
 }
+
+function onGetAttachmentSuccess(data, id) {
+    $("#linkAtt" + id).append(data.d.results[0].FileName);
+    $("#linkAtt" + id).attr('href', "https://" + appUrl.split('/')[2] + data.d.results[0].ServerRelativeUrl);
+}
+
 
 function SubmitItem(id)
 {
