@@ -44,8 +44,8 @@ function initializePage()
     // This function is executed if the above call is successful
     // It replaces the contents of the 'message' element with the user name
     function onGetUserNameSuccess() {
-        console.log('Hello ' + user.get_title());
-        $('span#UsernameLabel').text('Hello ' + user.get_title());
+        console.log('Hello, ' + user.get_title());
+        $('span#UsernameLabel').text('Hello, ' + user.get_title());
 
     }
 
@@ -79,7 +79,7 @@ function initializePage()
         schema['ResolvePrincipalSource'] = 15;
         schema['AllowMultipleValues'] = AllowMultipleValues;
         schema['MaximumEntitySuggestions'] = 50;
-        schema['Width'] = '200px';
+        schema['Width'] = '140px';
 
         SPClientPeoplePicker_InitStandaloneControlWrapper(peoplePickerElementId, null, schema);
     }
@@ -135,13 +135,18 @@ function CreateRecord() {
     var managerTitle = '';
     var mt = '';
 
+    if ($('.ms-formvalidation sp-peoplepicker-errormsg'))
+    {
+        alert("Invaild UserName field.");
+        return;
+    }
+
     if (SPClientPeoplePicker.SPClientPeoplePickerDict.PeoplePickerDiv_TopSpan.GetAllUserInfo()[0].Key != 'undefined')
     {
-        managerTitle = SPClientPeoplePicker.SPClientPeoplePickerDict.PeoplePickerDiv_TopSpan.GetAllUserKeys();
+        managerTitle = SPClientPeoplePicker.SPClientPeoplePickerDict.PeoplePickerDiv_TopSpan.GetAllUserInfo()[0].Key;
         mt = managerTitle.replace("i:0#.f|membership|", "");
         //console.log(mt);
     }
-        
         
 
     console.log("title: " + title);
@@ -288,7 +293,7 @@ function onItemsLoadSucceeded() {
             '</td><td>' + oListItem.get_item('StartDate1') +
             '</td><td>' + oListItem.get_item('EndDate1') +
             '</td><td>' + oListItem.get_item('Status') +
-            '</td><td>' + (oListItem.get_item('Attachments') ? "<a id='linkAtt" + oListItem.get_item('ID') + "' target='_blank' href=''></a>" : oListItem.get_item('Attachments')) +
+            '</td><td>' + (oListItem.get_item('Attachments') ? "<a id='linkAtt" + oListItem.get_item('ID') + "' target='_blank' href=''></a>" : "No attachment.") +
             '</td><td><button type="button" onclick="DeleteItem(' + oListItem.get_item('ID') + ')">Delete</button>';
 
         if (oListItem.get_item('Attachments'))
@@ -317,8 +322,26 @@ function onItemsLoadFailed(sender, args) {
 }
 
 function onGetAttachmentSuccess(data, id) {
-    $("#linkAtt" + id).append(data.d.results[0].FileName);
-    $("#linkAtt" + id).attr('href', "https://" + appUrl.split('/')[2] + data.d.results[0].ServerRelativeUrl);
+    //console.log(JSON.stringify(data));
+    var fileName = data.d.results[0].FileName;
+    var relUrl = data.d.results[0].ServerRelativeUrl;
+    $("#linkAtt" + id).append(fileName);
+    $("#linkAtt" + id).attr('href', "https://" + appUrl.split('/')[2] + relUrl);
+    if (fileName.indexOf('.doc') > -1 || fileName.indexOf('.xls') > -1 || fileName.indexOf('.ppt') > -1) 
+    {
+        $.ajax({
+            url: hostUrl + "/_api/web/getfilebyserverrelativeurl('" + relUrl + "')",
+            method: "GET",
+            headers: { "Accept": "application/json; odata=verbose" },
+            success: function (dat) {
+                var sid = dat.d.LinkingUrl;
+                $("#linkAtt" + id).attr("href", sid);
+            },
+            error: function (dat) {
+                
+            }
+        });
+    }
 }
 
 
@@ -330,7 +353,7 @@ function SubmitItem(id)
     var posturl = hostUrl + "/_api/web/lists/getbytitle('" + listName + "')/items(" + id + ")";
 
     var item = {
-        "Status": "Submitted"
+        "Status": "New"
     };
 
     var itemNew = {
@@ -524,3 +547,4 @@ function PageLoadedREST() {
         }
     }
 }
+

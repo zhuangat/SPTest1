@@ -56,5 +56,5 @@
     <b>List:</b>&nbsp;<button id="RefreshButton" type="button" onclick="LoadRecords();">Refresh</button><br />
     <table border="1" id="tblItemList"></table>
    
-    
+    <a onclick=""></a>
 </asp:Content>
