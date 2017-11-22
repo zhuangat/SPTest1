@@ -79,7 +79,7 @@ function initializePage()
         schema['ResolvePrincipalSource'] = 15;
         schema['AllowMultipleValues'] = AllowMultipleValues;
         schema['MaximumEntitySuggestions'] = 50;
-        schema['Width'] = '140px';
+        schema['Width'] = '130px';
 
         SPClientPeoplePicker_InitStandaloneControlWrapper(peoplePickerElementId, null, schema);
     }
@@ -135,18 +135,17 @@ function CreateRecord() {
     var managerTitle = '';
     var mt = '';
 
-    if ($('.ms-formvalidation sp-peoplepicker-errormsg'))
+    if ($('.ms-formvalidation sp-peoplepicker-errormsg').length || SPClientPeoplePicker.SPClientPeoplePickerDict.PeoplePickerDiv_TopSpan.GetAllUserInfo()[0] == null)
     {
         alert("Invaild UserName field.");
         return;
     }
 
-    if (SPClientPeoplePicker.SPClientPeoplePickerDict.PeoplePickerDiv_TopSpan.GetAllUserInfo()[0].Key != 'undefined')
-    {
-        managerTitle = SPClientPeoplePicker.SPClientPeoplePickerDict.PeoplePickerDiv_TopSpan.GetAllUserInfo()[0].Key;
-        mt = managerTitle.replace("i:0#.f|membership|", "");
-        //console.log(mt);
-    }
+
+    managerTitle = SPClientPeoplePicker.SPClientPeoplePickerDict.PeoplePickerDiv_TopSpan.GetAllUserInfo()[0].Key;
+    mt = managerTitle.replace("i:0#.f|membership|", "");
+    //console.log(mt);
+    
         
 
     console.log("title: " + title);
@@ -271,7 +270,7 @@ function LoadRecords() {
 
     var oList = context.get_web().get_lists().getByTitle('NewList1');
     var camlQuery = new SP.CamlQuery();
-    camlQuery.set_viewXml('<View><RowLimit>100</RowLimit></View>');
+    camlQuery.set_viewXml('<View><Query><Where></Where></Query><RowLimit>100</RowLimit></View>');
     collListItem = oList.getItems(camlQuery);
     context.load(collListItem);
     context.executeQueryAsync(onItemsLoadSucceeded, onItemsLoadFailed);
@@ -289,9 +288,9 @@ function onItemsLoadSucceeded() {
         //listItemInfo = listItemInfo + '<li>' + oListItem.get_item('Title') + ' ' + oListItem.get_item('Description') + '</li>';
         listItemInfo = listItemInfo + '<tr><td>' + oListItem.get_item('ID') +
             '</td><td>' + oListItem.get_item('Title') +
-            '</td><td>' + oListItem.get_item('Desc') + 
-            '</td><td>' + oListItem.get_item('StartDate1') +
-            '</td><td>' + oListItem.get_item('EndDate1') +
+            '</td><td>' + oListItem.get_item('Desc') +
+            '</td><td>' + ISOFormatToNormalDate(oListItem.get_item('StartDate1')) +
+            '</td><td>' + ISOFormatToNormalDate(oListItem.get_item('EndDate1')) +
             '</td><td>' + oListItem.get_item('Status') +
             '</td><td>' + (oListItem.get_item('Attachments') ? "<a id='linkAtt" + oListItem.get_item('ID') + "' target='_blank' href=''></a>" : "No attachment.") +
             '</td><td><button type="button" onclick="DeleteItem(' + oListItem.get_item('ID') + ')">Delete</button>';
@@ -376,7 +375,10 @@ function SubmitItem(id)
         },
         success: function (data) {
             console.log("Item updated");
-            LoadRecords();
+            setTimeout(function () {
+                LoadRecords();
+            }, 10000);
+            
         },
         error: function (data) {
             console.log("Item cannot be updated");

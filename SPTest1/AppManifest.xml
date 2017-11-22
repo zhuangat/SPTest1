@@ -8,7 +8,7 @@
 >
   <Properties>
     <Title>SPTest1</Title>
-    <StartPage>~appWebUrl/Pages/Default.aspx?{StandardTokens}</StartPage>
+    <StartPage>~appWebUrl/Pages/LandingPage.aspx?{StandardTokens}</StartPage>
   </Properties>
 
   <AppPrincipal>

@@ -63,9 +63,13 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="Images\SOShongkong-logo.png" />
+    <Content Include="Pages\LandingPage.aspx" />
+    <Content Include="Pages\RecordsApproval.aspx" />
     <Content Include="Scripts\angular-mocks.js" />
     <Content Include="Scripts\angular.js" />
     <Content Include="Scripts\angular.min.js" />
+    <Content Include="Scripts\landingPageFunctions.js" />
     <Content Include="WorkflowHistoryList\Elements.xml" />
     <Content Include="WorkflowHistoryList_1\Elements.xml" />
     <Content Include="WorkflowTaskList\Elements.xml" />
@@ -132,9 +136,7 @@
     <Content Include="Content\App.css" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Images\AppIcon.png">
-      <OpcRelationship>manifest-icon</OpcRelationship>
-    </Content>
+    <Content Include="Images\AppIcon.png" />
     <Content Include="Images\Elements.xml" />
     <None Include="Images\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{e2511322-712f-4180-b092-9a3e30653a87}</SharePointProjectItemId>

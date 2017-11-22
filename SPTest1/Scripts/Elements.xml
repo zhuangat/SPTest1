@@ -11,5 +11,6 @@
     <File Path="Scripts\angular.min.js" Url="Scripts/angular.min.js" ReplaceContent="TRUE" />
     <File Path="Scripts\angular.js" Url="Scripts/angular.js" ReplaceContent="TRUE" />
     <File Path="Scripts\angular-mocks.js" Url="Scripts/angular-mocks.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\landingPageFunctions.js" Url="Scripts/landingPageFunctions.js" ReplaceContent="TRUE" />
   </Module>
 </Elements>

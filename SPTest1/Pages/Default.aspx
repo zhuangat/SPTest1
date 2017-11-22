@@ -35,9 +35,9 @@
 <%-- The markup and script in the following Content element will be placed in the <body> of the page --%>
 <asp:Content ContentPlaceHolderID="PlaceHolderMain" runat="server">
     <b>
-        <asp:Label ClientIDMode="Static" ID="UsernameLabel" runat="server" Text="gooodboy"></asp:Label></b><br/>
+        <asp:Label ClientIDMode="Static" ID="UsernameLabel" runat="server" Text="gooodboy"></asp:Label></b><br /><br />
     <b>Add New Item:</b><br />
-   <table border="1">
+   <table class="responstable" border="1">
        <tr><td>UserName</td><td><div id="PeoplePickerDiv"></div></td></tr>
        <tr><td>Title:</td><td><input id="txtTitle" type="text" /></td></tr>
        <tr><td>Description:</td><td><textarea id="txtDescription" cols="20" rows="2"></textarea></td></tr>
@@ -48,13 +48,13 @@
        <tr><td>Start Date (mm/dd/yyyy):</td><td><input id="txtStartDate" type="text" class="DT" onchange="OnDatePicked()"/></td></tr>
        <tr><td>End Date (mm/dd/yyyy):</td><td><input id="txtEndDate" type="text" class="DT" onchange="OnDatePicked()" /></td></tr>
        <tr><td>Upload Attachments:</td><td><input type="file" id="getFile"/></td></tr>
-        <tr><td><input type="button" value="Submit" onclick="javascript: return CreateRecord();" /></td><td></td></tr>
+        <tr><td><button class="btn" type="button" onclick="javascript: return CreateRecord();">Submit</button></td><td></td></tr>
     
       </table>
 
     <br /><br />
-    <b>List:</b>&nbsp;<button id="RefreshButton" type="button" onclick="LoadRecords();">Refresh</button><br />
-    <table border="1" id="tblItemList"></table>
+    <b>List:</b>&nbsp;<button class="btn" id="RefreshButton" type="button" onclick="LoadRecords();">Refresh</button><br />
+    <table class="responstable" border="1" id="tblItemList"></table>
    
-    <a onclick=""></a>
+    
 </asp:Content>
