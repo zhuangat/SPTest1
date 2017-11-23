@@ -582,6 +582,6 @@ function GetAttachmentsByItemId(itemId, listName, hostUrl, success ,id) {
 
 function ISOFormatToNormalDate(isoDate) {
     if (!isoDate)
-        return;
+        return "No date.";
     return isoDate.toString().slice(4, 15);
 }

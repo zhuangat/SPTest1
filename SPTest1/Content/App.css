@@ -16,6 +16,11 @@
         text-decoration: none;
     }
 
+textarea {
+    width:90%;
+    height:500px;
+}
+
 /*
 
 RESPONSTABLE 2.0 by jordyvanraaij
@@ -129,4 +134,14 @@ h1 {
         color: #167F92;
     }
 
+/*                     */
 
+input[type=text], select {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}

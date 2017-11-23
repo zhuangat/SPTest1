@@ -48,7 +48,7 @@
        <tr><td>Start Date (mm/dd/yyyy):</td><td><input id="txtStartDate" type="text" class="DT" onchange="OnDatePicked()"/></td></tr>
        <tr><td>End Date (mm/dd/yyyy):</td><td><input id="txtEndDate" type="text" class="DT" onchange="OnDatePicked()" /></td></tr>
        <tr><td>Upload Attachments:</td><td><input type="file" id="getFile"/></td></tr>
-        <tr><td><button class="btn" type="button" onclick="javascript: return CreateRecord();">Submit</button></td><td></td></tr>
+        <tr><td><button class="btn" type="submit" onclick="javascript: return CreateRecord();">Submit</button></td><td></td></tr>
     
       </table>
 
@@ -56,5 +56,7 @@
     <b>List:</b>&nbsp;<button class="btn" id="RefreshButton" type="button" onclick="LoadRecords();">Refresh</button><br />
     <table class="responstable" border="1" id="tblItemList"></table>
    
-    
+    <div>
+       <button class="btn" type="button" onclick="javascript: window.location = document.URL.replace('Default.aspx','LandingPage.aspx');">Return</button>
+    </div>
 </asp:Content>

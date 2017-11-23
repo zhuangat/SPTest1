@@ -96,25 +96,6 @@
       </If.Condition>
       <If.Then>
         <Sequence sap2010:WorkflowViewState.IdRef="Sequence_2">
-          <p1:Email AdditionalHeaders="{x:Null}" BCC="{x:Null}" CC="{x:Null}" sap2010:WorkflowViewState.IdRef="Email_1" Subject="An Item is submitted">
-            <p1:Email.Body>
-              <InArgument x:TypeArguments="x:String">
-                <mca:CSharpValue x:TypeArguments="x:String">"An Item '"+Title+"' is submitted"</mca:CSharpValue>
-              </InArgument>
-            </p1:Email.Body>
-            <p1:Email.To>
-              <InArgument x:TypeArguments="sco:Collection(x:String)">
-                <mca:CSharpValue x:TypeArguments="sco:Collection(x:String)">new System.Collections.ObjectModel.Collection&lt;String&gt; { "michael@michaelsp.onmicrosoft.com"};</mca:CSharpValue>
-              </InArgument>
-            </p1:Email.To>
-          </p1:Email>
-          <p1:WriteToHistory sap2010:WorkflowViewState.IdRef="WriteToHistory_1">
-            <p1:WriteToHistory.Message>
-              <InArgument x:TypeArguments="x:String">
-                <mca:CSharpValue x:TypeArguments="x:String">"Email sent for '"+Title+"'";</mca:CSharpValue>
-              </InArgument>
-            </p1:WriteToHistory.Message>
-          </p1:WriteToHistory>
           <p1:UpdateListItem ItemGuid="{x:Null}" ListItemProperties="{x:Null}" sap2010:WorkflowViewState.IdRef="UpdateListItem_1">
             <p1:UpdateListItem.ItemId>
               <InArgument x:TypeArguments="x:Int32">
@@ -145,10 +126,29 @@
               </InArgument>
             </p1:WriteToHistory.Message>
           </p1:WriteToHistory>
+          <p1:Email AdditionalHeaders="{x:Null}" BCC="{x:Null}" CC="{x:Null}" sap2010:WorkflowViewState.IdRef="Email_1" Subject="An Item is submitted">
+            <p1:Email.Body>
+              <InArgument x:TypeArguments="x:String">
+                <mca:CSharpValue x:TypeArguments="x:String">"An Item '"+Title+"' is submitted"</mca:CSharpValue>
+              </InArgument>
+            </p1:Email.Body>
+            <p1:Email.To>
+              <InArgument x:TypeArguments="sco:Collection(x:String)">
+                <mca:CSharpValue x:TypeArguments="sco:Collection(x:String)">new System.Collections.ObjectModel.Collection&lt;String&gt; { "michael@michaelsp.onmicrosoft.com"};</mca:CSharpValue>
+              </InArgument>
+            </p1:Email.To>
+          </p1:Email>
+          <p1:WriteToHistory sap2010:WorkflowViewState.IdRef="WriteToHistory_1">
+            <p1:WriteToHistory.Message>
+              <InArgument x:TypeArguments="x:String">
+                <mca:CSharpValue x:TypeArguments="x:String">"Email sent for '"+Title+"'";</mca:CSharpValue>
+              </InArgument>
+            </p1:WriteToHistory.Message>
+          </p1:WriteToHistory>
         </Sequence>
       </If.Then>
     </If>
-    <sads:DebugSymbol.Symbol>d2BDOlxVc2Vyc1xNaWNoYWVsIEh1YW5nXHNvdXJjZVxyZXBvc1xzaGFyZXBvaW50IHRlc3RcU1BUZXN0MVxXb3JrZmxvd3NcTmV3V29ya2Zsb3cxXFdvcmtmbG93LnhhbWwdKgOYAQ4CAQEzBUUbAgFaRgVaHAIBNlsFlgEKAgECPQs9dQIBY0ILQmUCAVw2CzgoAgFbVwtXWQIBU04LTlcCAUxUC1RdAgFFSQtJXQIBPlELUVYCATdeC15ZAgEDYgmUARQCAQo3DTckAwFbAWMLbhYCASZvC3UfAgEedguMAR8CARONAQuTAR8CAQtrEWvCAQIBL2YRZnECAShjgQFjlwECASdyEXJsAgEfhQERiQEvAgEcgAERgAF7AgEVeRF7LgIBFJABEZABcgIBDIcBS4cBVAIBHXoTeioDARQB</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d2BDOlxVc2Vyc1xNaWNoYWVsIEh1YW5nXHNvdXJjZVxyZXBvc1xzaGFyZXBvaW50IHRlc3RcU1BUZXN0MVxXb3JrZmxvd3NcTmV3V29ya2Zsb3cxXFdvcmtmbG93LnhhbWwdKgOYAQ4CAQEzBUUbAgFaRgVaHAIBNlsFlgEKAgECPQs9dQIBY0ILQmUCAVw2CzgoAgFbVwtXWQIBU04LTlcCAUxUC1RdAgFFSQtJXQIBPlELUVYCATdeC15ZAgEDYgmUARQCAQo3DTckAwFbAWMLeR8CASt6C4ABHwIBI4EBC4wBFgIBE40BC5MBHwIBC3IRdi8CATRtEW17AgEtZhFoLgIBLH0RfXICASSJARGJAcIBAgEchAERhAFxAgEVgQGBAYEBlwECARSQARGQAWwCAQx0S3RUAgE1ZxNnKgMBLAE=</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
@@ -169,8 +169,6 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Email_1" sap:VirtualizedContainerService.HintSize="200,68" />
-      <sap2010:ViewStateData Id="WriteToHistory_1" sap:VirtualizedContainerService.HintSize="200,68" />
       <sap2010:ViewStateData Id="UpdateListItem_1" sap:VirtualizedContainerService.HintSize="200,68">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -183,6 +181,8 @@
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="WriteToHistory_2" sap:VirtualizedContainerService.HintSize="200,68" />
+      <sap2010:ViewStateData Id="Email_1" sap:VirtualizedContainerService.HintSize="200,68" />
+      <sap2010:ViewStateData Id="WriteToHistory_1" sap:VirtualizedContainerService.HintSize="200,68" />
       <sap2010:ViewStateData Id="Sequence_2" sap:VirtualizedContainerService.HintSize="222,516">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">

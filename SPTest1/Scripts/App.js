@@ -79,7 +79,9 @@ function initializePage()
         schema['ResolvePrincipalSource'] = 15;
         schema['AllowMultipleValues'] = AllowMultipleValues;
         schema['MaximumEntitySuggestions'] = 50;
-        schema['Width'] = '130px';
+        schema['AutoFillEnabled'] = true;
+        schema['Required'] = true;
+        schema['Width'] = '100%';
 
         SPClientPeoplePicker_InitStandaloneControlWrapper(peoplePickerElementId, null, schema);
     }
@@ -375,9 +377,8 @@ function SubmitItem(id)
         },
         success: function (data) {
             console.log("Item updated");
-            setTimeout(function () {
-                LoadRecords();
-            }, 10000);
+            LoadRecords();
+            
             
         },
         error: function (data) {

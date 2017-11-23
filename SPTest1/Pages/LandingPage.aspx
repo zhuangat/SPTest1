@@ -32,7 +32,10 @@
 <asp:Content ContentPlaceHolderId="PlaceHolderMain" runat="server">
     <WebPartPages:WebPartZone runat="server" FrameType="TitleBarOnly" ID="full" Title="loc:full" />
     <div style="margin-left:200px;margin-top:50px;">
-    <button class="btn" type="button" onclick="AddRecordRedirect()">Add New Record</button>
+        <div>
+            <button class="btn" type="button" onclick="AddRecordRedirect()">Add New Record</button>
+            <button class="btn" type="button" onclick="ManagerRecordRedirect()">Manager Portal</button>
+        </div>
     </div>
 
 </asp:Content>
